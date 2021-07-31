@@ -2,6 +2,10 @@
 var express = require("express");
 var app = express();
 
+//This enables express to use static files
+//This is a built-in middleware
+app.use(express.static("public"));
+
 //This is pug
 app.set("view engine", "pug");
 app.set("views", "./views");
@@ -17,6 +21,10 @@ app.get("/dynamic_view", function (req, res) {
       age: "20",
     },
   });
+});
+
+app.get("/static_file_test", function (req, res) {
+  res.render("static_file_test");
 });
 
 //For routing, check things.js
