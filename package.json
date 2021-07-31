@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/samuel-joseph/expressjs/issues"
   },
-  "homepage": "https://github.com/samuel-joseph/expressjs#readme"
+  "homepage": "https://github.com/samuel-joseph/expressjs#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
