@@ -3,8 +3,13 @@
 var express = require("express");
 var router = express.Router();
 
-router.get("/", function (req, res) {
-  res.send("GET route on things");
+router.get("/", function (req, res, next) {
+  res.send("MIDDLE");
+  next();
+});
+
+router.use("/", function (req, res) {
+  console.log("END");
 });
 
 router.post("/", function (req, res) {
@@ -24,5 +29,5 @@ router.get("*", function (req, res) {
   res.send("Sorry, this is an invalid URL.");
 });
 
-//2. export this router to use in our index.js
+//export this router to use in our index.js
 module.exports = router;
