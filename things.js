@@ -1,5 +1,4 @@
 //This is Express.router
-
 var express = require("express");
 var router = express.Router();
 
@@ -8,12 +7,8 @@ router.get("/", function (req, res, next) {
   next();
 });
 
-router.use("/", function (req, res) {
-  console.log("END");
-});
-
 router.post("/", function (req, res) {
-  res.send("POST route on thigns");
+  res.send("POST route on things");
 });
 
 //DYNAMIC routes
