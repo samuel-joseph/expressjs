@@ -9,7 +9,16 @@ var app = express();
 app.use(cookieParser());
 app.use(session({ secret: "Shh, its a secret!" }));
 
+//This is body-parser multer
+var bodyParser = require("body-parser");
+var multer = require("multer");
+var upload = multer();
+
 app.get("/", function (req, res) {
+  res.cookie("name", "express").send("cookie set");
+  console.log(document.cookie);
+  res.render("form");
+
   if (req.session.page_views) {
     req.session.page_views++;
     res.send("You visited this page " + req.session.page_views + " times");
@@ -18,17 +27,6 @@ app.get("/", function (req, res) {
     res.send("Welcome to this page first time!");
   }
 });
-
-//This is body-parser multer
-var bodyParser = require("body-parser");
-var multer = require("multer");
-var upload = multer();
-
-// app.get("/", function (req, res) {
-//   res.cookie("name", "express").send("cookie set");
-//   console.log(document.cookie);
-//   res.render("form");
-// });
 
 // for parsing application/json
 app.use(bodyParser.json());
@@ -84,5 +82,30 @@ app.use(function (req, res, next) {
 //both index.js and things.js should be in same directory
 //Route handler that sends the response
 app.use("/things", things);
+
+var Users = [];
+
+app.get("/signup", function (req, res) {
+  res.render("signup");
+});
+
+app.post("/signup", function (req, res) {
+  if (!req.body.id || !req.body.password) {
+    res.status("400");
+    res.send("Invalid details!");
+  } else {
+    Users.filter(function (user) {
+      if (user.id === req.body.id) {
+        res.render("signup", {
+          message: "User Already Exists! Login or choose another user id",
+        });
+      }
+    });
+    var newUser = { id: req.body.id, password: req.body.password };
+    Users.push(newUser);
+    req.session.user = newUser;
+    res.redirect("/protected_page");
+  }
+});
 
 app.listen(3000);
