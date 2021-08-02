@@ -1,6 +1,50 @@
 //This is the express.js initialization
 var express = require("express");
+var cookieParser = require("cookie-parser");
+var session = require("express-session");
+
 var app = express();
+
+//cookie parser
+app.use(cookieParser());
+app.use(session({ secret: "Shh, its a secret!" }));
+
+app.get("/", function (req, res) {
+  if (req.session.page_views) {
+    req.session.page_views++;
+    res.send("You visited this page " + req.session.page_views + " times");
+  } else {
+    req.session.page_views = 1;
+    res.send("Welcome to this page first time!");
+  }
+});
+
+//This is body-parser multer
+var bodyParser = require("body-parser");
+var multer = require("multer");
+var upload = multer();
+
+// app.get("/", function (req, res) {
+//   res.cookie("name", "express").send("cookie set");
+//   console.log(document.cookie);
+//   res.render("form");
+// });
+
+// for parsing application/json
+app.use(bodyParser.json());
+
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true }));
+//form-urlencoded
+
+// for parsing multipart/form-data
+app.use(upload.array());
+app.use(express.static("public"));
+
+app.post("/", function (req, res) {
+  console.log(req.body);
+  res.send("recieved your request!");
+});
 
 //This enables express to use static files
 //This is a built-in middleware
